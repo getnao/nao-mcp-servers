@@ -1,0 +1,40 @@
+{
+  "name": "@getnao/metabase-mcp-server",
+  "version": "0.0.1",
+  "description": "A Model Context Protocol server, designed by Nao Labs to interact with Metabase.",
+  "bin": {
+    "metabase-mcp-server": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "ci": "npm run build",
+    "prepublishOnly": "npm run ci"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.22.0",
+    "axios": "^1.13.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getnao/nao-mcp-servers.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/getnao/nao-mcp-servers/issues"
+  },
+  "homepage": "https://github.com/getnao/nao-mcp-servers#readme"
+}
