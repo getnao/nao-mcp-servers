@@ -1,13 +1,13 @@
 {
-  "name": "@getnao/metabase-mcp-server",
-  "version": "0.0.1",
-  "description": "A Model Context Protocol server, designed by Nao Labs to interact with Metabase.",
+  "name": "@getnao/nao-airflow-mcp-server",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol server, designed by Nao Labs to interact with Airflow.",
   "bin": {
-    "metabase-mcp-server": "dist/index.js"
+    "airflow-mcp-server": "dist/index.js"
   },
   "files": ["dist"],
   "type": "module",
-  "scripts": {
+   "scripts": {
     "build": "tsc",
     "ci": "npm run build",
     "prepublishOnly": "npm run ci"
@@ -22,7 +22,7 @@
     "@types/node": "^24.10.1",
     "typescript": "^5.9.3"
   },
-  "main": "index.js",
+   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/getnao/nao-mcp-servers.git"

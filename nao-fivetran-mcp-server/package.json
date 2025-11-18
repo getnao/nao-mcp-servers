@@ -1,9 +1,9 @@
 {
-  "name": "@getnao/metabase-mcp-server",
-  "version": "0.0.1",
-  "description": "A Model Context Protocol server, designed by Nao Labs to interact with Metabase.",
+  "name": "@getnao/nao-fivetran-mcp-server",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol server, designed by Nao Labs to interact with Fivetran.",
   "bin": {
-    "metabase-mcp-server": "dist/index.js"
+    "fivetran-mcp-server": "dist/index.js"
   },
   "files": ["dist"],
   "type": "module",
@@ -16,7 +16,7 @@
     "@modelcontextprotocol/sdk": "^1.22.0",
     "axios": "^1.13.2",
     "dotenv": "^17.2.3",
-    "zod": "^3.25.76"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
