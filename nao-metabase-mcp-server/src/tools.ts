@@ -164,7 +164,9 @@ export const tools: Record<string, Tool> = {
         config: {
             title: 'List Dashboards',
             description: 'Get all dashboards in Metabase',
-            inputSchema: { collectionId: z.number().optional().describe('Filter by collection ID')}
+            inputSchema: { 
+                collectionId: z.number().optional().describe('Filter by collection ID')
+            }
         },
         handler: async ({ collectionId }: any) => {
             const url = collectionId 
@@ -214,6 +216,38 @@ export const tools: Record<string, Tool> = {
                 name,
                 description,
                 collection_id: collectionId
+            });
+            return {
+                content: [{
+                    type: 'text',
+                    text: JSON.stringify(response.data, null, 2)
+                }]
+            };
+        }
+    },
+
+    'update-dashboard': {
+        config: {
+            title: 'Update Dashboard',
+            description: 'Update an existing dashboard with new details or dashcards',
+            inputSchema: {
+                id: z.number().describe('Dashboard ID'),
+                name: z.string().optional().describe('Dashboard name'),
+                description: z.string().optional().describe('Dashboard description'),
+                dashcards: z.array(z.object({
+                    col: z.number().int().min(0).describe('Column position (must be >= 0)'),
+                    id: z.number().int().describe('Dashcard ID'),
+                    row: z.number().int().min(0).describe('Row position (must be >= 0)'),
+                    size_x: z.number().int().min(1).describe('Width (must be >= 1)'),
+                    size_y: z.number().int().min(1).describe('Height (must be >= 1)')
+                }))
+            }
+        },
+        handler: async ({ id, name, description, dashcards }: any) => {
+            const response = await axiosInstance.put(`/api/dashboard/${id}`, {
+                name,
+                description,
+                dashcards
             });
             return {
                 content: [{
