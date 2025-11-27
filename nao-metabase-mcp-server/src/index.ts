@@ -4,27 +4,31 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { tools } from "./tools.js";
 
 class MetabaseServer {
-    private mcpServer: McpServer;
+  private mcpServer: McpServer;
 
-    constructor() {
-        this.mcpServer = new McpServer({
-            name: "Metabase Server",
-            version: "1.0.0",
-        });
+  constructor() {
+    this.mcpServer = new McpServer({
+      name: "Metabase Server",
+      version: "1.0.0",
+    });
 
-        this.registerTools();
+    this.registerTools();
+  }
+
+  private registerTools() {
+    for (const tool in tools) {
+      this.mcpServer.registerTool(
+        tool,
+        tools[tool].config,
+        tools[tool].handler
+      );
     }
+  }
 
-    private registerTools () {
-        for (const tool in tools) {
-            this.mcpServer.registerTool(tool, tools[tool].config, tools[tool].handler);
-        }
-    }
-
-    public async run() {
-        const transport = new StdioServerTransport();
-        await this.mcpServer.connect(transport);
-    }
+  public async run() {
+    const transport = new StdioServerTransport();
+    await this.mcpServer.connect(transport);
+  }
 }
 
 const server = new MetabaseServer();
