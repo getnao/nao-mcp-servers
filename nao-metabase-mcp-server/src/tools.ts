@@ -273,6 +273,7 @@ export const tools: Record<string, Tool> = {
                 .min(0)
                 .describe("Column position (must be >= 0)"),
               id: z.number().int().describe("Dashcard ID"),
+              card_id: z.number().int().describe("Card ID"),
               row: z
                 .number()
                 .int()
@@ -286,30 +287,11 @@ export const tools: Record<string, Tool> = {
       },
     },
     handler: async ({ id, name, description, dashcards }: any) => {
-      console.error("Updating dashboard with ID:", id);
-      const payload: any = {};
-
-      if (name !== undefined) payload.name = name;
-      if (description !== undefined) payload.description = description;
-
-      if (dashcards.length > 0) {
-        console.error("Updating dashcards:", dashcards);
-        const currentDashcards = await axiosInstance.get(
-          `/api/dashboard/${id}`
-        );
-        const allDashcards = [...dashcards, ...currentDashcards.data.dashcards];
-        console.error("All dashcards to update:", allDashcards);
-        payload.dashcards = allDashcards.map((card: any) => ({
-          id: card.id,
-          col: card.col,
-          row: card.row,
-          size_x: card.size_x,
-          size_y: card.size_y,
-        }));
-      }
-
-      console.error("Final payload for update:", payload);
-      const response = await axiosInstance.put(`/api/dashboard/${id}`, payload);
+      const response = await axiosInstance.put(`/api/dashboard/${id}`, {
+        name,
+        description,
+        dashcards,
+      });
       return {
         content: [
           {
