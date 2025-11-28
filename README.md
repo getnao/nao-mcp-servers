@@ -13,7 +13,7 @@ A library of Model Context Protocol servers for various integrations.
         "@getnao/metabase-mcp-server@latest"
       ],
       "env": {
-        "METABASE_URL": <YOUR_METABASE-URL>,
+        "METABASE_URL": <YOUR_METABASE_URL>,
         "METABASE_API_KEY": <YOUR_METABASE_API_KEY>
       },
     }
