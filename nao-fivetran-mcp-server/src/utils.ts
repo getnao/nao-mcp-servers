@@ -32,9 +32,9 @@ export type Tool = {
 };
 
 export const axiosInstance: AxiosInstance = axios.create({
+  baseURL: "https://api.fivetran.com/v1",
   headers: {
     "Content-Type": "application/json",
+    Authorization: `Basic ${FIVETRAN_BASE_64_API_KEY}`,
   },
 });
-
-axiosInstance.defaults.headers.common["x-api-key"] = FIVETRAN_BASE_64_API_KEY;

@@ -23,7 +23,7 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ connectionId, redirectUri, hideSetupGuide }: any) => {
       const response = await axiosInstance.post(
-        `/v1/connections/${connectionId}/connect-card`,
+        `/connections/${connectionId}/connect-card`,
         {
           connect_card_config: {
             redirect_uri: redirectUri,
@@ -114,7 +114,7 @@ export const tools: Record<string, Tool> = {
         };
       }
 
-      const response = await axiosInstance.post("/v1/connections", payload);
+      const response = await axiosInstance.post("/connections", payload);
       return {
         content: [
           {
@@ -143,8 +143,8 @@ export const tools: Record<string, Tool> = {
       if (cursor) params.append("cursor", cursor);
 
       const url = params.toString()
-        ? `/v1/connections?${params.toString()}`
-        : `/v1/connections`;
+        ? `/connections?${params.toString()}`
+        : `/connections`;
 
       const response = await axiosInstance.get(url);
       return {
@@ -167,9 +167,7 @@ export const tools: Record<string, Tool> = {
       },
     },
     handler: async ({ connectionId }: any) => {
-      const response = await axiosInstance.get(
-        `/v1/connections/${connectionId}`
-      );
+      const response = await axiosInstance.get(`/connections/${connectionId}`);
       return {
         content: [
           {
@@ -191,7 +189,7 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ connectionId }: any) => {
       const response = await axiosInstance.get(
-        `/v1/connections/${connectionId}/state`
+        `/connections/${connectionId}/state`
       );
       return {
         content: [
@@ -246,7 +244,7 @@ export const tools: Record<string, Tool> = {
       };
 
       const response = await axiosInstance.patch(
-        `/v1/connections/${connectionId}`,
+        `/connections/${connectionId}`,
         payload
       );
       return {
@@ -270,7 +268,7 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ connectionId }: any) => {
       const response = await axiosInstance.patch(
-        `/v1/connections/${connectionId}/state`
+        `/connections/${connectionId}/state`
       );
       return {
         content: [
@@ -303,7 +301,7 @@ export const tools: Record<string, Tool> = {
         service,
       };
 
-      const response = await axiosInstance.post("/v1/destinations", payload);
+      const response = await axiosInstance.post("/destinations", payload);
       return {
         content: [
           {
@@ -330,8 +328,8 @@ export const tools: Record<string, Tool> = {
       if (cursor) params.append("cursor", cursor);
 
       const url = params.toString()
-        ? `/v1/destinations?${params.toString()}`
-        : `/v1/destinations`;
+        ? `/destinations?${params.toString()}`
+        : `/destinations`;
 
       const response = await axiosInstance.get(url);
       return {
@@ -355,7 +353,7 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ destinationId }: any) => {
       const response = await axiosInstance.get(
-        `/v1/destinations/${destinationId}`
+        `/destinations/${destinationId}`
       );
       return {
         content: [
@@ -380,7 +378,7 @@ export const tools: Record<string, Tool> = {
       const payload: any = {};
 
       const response = await axiosInstance.patch(
-        `/v1/destinations/${destinationId}`,
+        `/destinations/${destinationId}`,
         payload
       );
       return {
@@ -404,7 +402,7 @@ export const tools: Record<string, Tool> = {
       },
     },
     handler: async ({ name }: any) => {
-      const response = await axiosInstance.post("/v1/groups", { name });
+      const response = await axiosInstance.post("/groups", { name });
       return {
         content: [
           {
@@ -432,8 +430,8 @@ export const tools: Record<string, Tool> = {
       if (cursor) params.append("cursor", cursor);
 
       const url = params.toString()
-        ? `/v1/groups/${groupId}/users?${params.toString()}`
-        : `/v1/groups/${groupId}/users`;
+        ? `/groups/${groupId}/users?${params.toString()}`
+        : `/groups/${groupId}/users`;
 
       const response = await axiosInstance.get(url);
       return {
@@ -460,7 +458,7 @@ export const tools: Record<string, Tool> = {
       },
     },
     handler: async ({ groupId, email, role }: any) => {
-      const response = await axiosInstance.post(`/v1/groups/${groupId}/users`, {
+      const response = await axiosInstance.post(`/groups/${groupId}/users`, {
         user_id: email,
         role,
       });
@@ -488,10 +486,7 @@ export const tools: Record<string, Tool> = {
       const payload: any = {};
       if (name) payload.name = name;
 
-      const response = await axiosInstance.patch(
-        `/v1/groups/${groupId}`,
-        payload
-      );
+      const response = await axiosInstance.patch(`/groups/${groupId}`, payload);
       return {
         content: [
           {
@@ -511,7 +506,7 @@ export const tools: Record<string, Tool> = {
       inputSchema: {},
     },
     handler: async () => {
-      const url = `/v1/users`;
+      const url = `/users`;
 
       const response = await axiosInstance.get(url);
       return {
@@ -534,7 +529,7 @@ export const tools: Record<string, Tool> = {
       },
     },
     handler: async ({ userId }: any) => {
-      const response = await axiosInstance.get(`/v1/users/${userId}`);
+      const response = await axiosInstance.get(`/users/${userId}`);
       return {
         content: [
           {
@@ -568,10 +563,7 @@ export const tools: Record<string, Tool> = {
       if (updates.picture) payload.picture = updates.picture;
       if (updates.role) payload.role = updates.role;
 
-      const response = await axiosInstance.patch(
-        `/v1/users/${userId}`,
-        payload
-      );
+      const response = await axiosInstance.patch(`/users/${userId}`, payload);
       return {
         content: [
           {
@@ -595,7 +587,7 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ userId, connectionId, role }: any) => {
       const response = await axiosInstance.patch(
-        `/v1/users/${userId}/connections/${connectionId}`,
+        `/users/${userId}/connections/${connectionId}`,
         { role }
       );
       return {
@@ -621,7 +613,7 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ userId, groupId, role }: any) => {
       const response = await axiosInstance.patch(
-        `/v1/users/${userId}/groups/${groupId}`,
+        `/users/${userId}/groups/${groupId}`,
         { role }
       );
       return {
