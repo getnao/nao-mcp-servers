@@ -3,13 +3,13 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { tools } from "./tools.js";
 
-class MetabaseServer {
+class FivetranServer {
   private mcpServer: McpServer;
 
   constructor() {
     this.mcpServer = new McpServer({
-      name: "Metabase Server",
-      version: "0.2.3",
+      name: "Fivetran Server",
+      version: "1.0.0",
     });
 
     this.registerTools();
@@ -31,5 +31,5 @@ class MetabaseServer {
   }
 }
 
-const server = new MetabaseServer();
+const server = new FivetranServer();
 server.run().catch(console.error);

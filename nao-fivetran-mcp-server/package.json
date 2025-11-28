@@ -1,11 +1,13 @@
 {
-  "name": "@getnao/nao-fivetran-mcp-server",
+  "name": "@getnao/fivetran-mcp-server",
   "version": "1.0.0",
   "description": "A Model Context Protocol server, designed by Nao Labs to interact with Fivetran.",
   "bin": {
     "fivetran-mcp-server": "dist/index.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "scripts": {
     "build": "tsc",
@@ -15,7 +17,6 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.22.0",
     "axios": "^1.13.2",
-    "dotenv": "^17.2.3",
     "zod": "^4.1.12"
   },
   "devDependencies": {
