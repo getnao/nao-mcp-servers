@@ -9,7 +9,7 @@ class MetabaseServer {
   constructor() {
     this.mcpServer = new McpServer({
       name: "Metabase Server",
-      version: "0.2.3",
+      version: "0.3.1",
     });
 
     this.registerTools();

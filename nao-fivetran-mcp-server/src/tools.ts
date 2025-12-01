@@ -3,7 +3,7 @@ import { Tool, axiosInstance } from "./utils.js";
 
 export const tools: Record<string, Tool> = {
   // ==================== CONNECTIONS ====================
-  "create-connect-card": {
+  "fivetran-create-connect-card": {
     config: {
       title: "Create Connect Card",
       description: "Create a Connect Card for user-managed connector setup",
@@ -42,7 +42,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "create-connection": {
+  "fivetran-create-connection": {
     config: {
       title: "Create Connection",
       description: "Create a new Fivetran connector",
@@ -126,7 +126,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "list-connections": {
+  "fivetran-list-connections": {
     config: {
       title: "List Connections",
       description: "Get all Fivetran connectors",
@@ -158,7 +158,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "get-connection-details": {
+  "fivetran-get-connection-details": {
     config: {
       title: "Get Connection Details",
       description: "Retrieve details of a specific Fivetran connector",
@@ -179,7 +179,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "get-connection-state": {
+  "fivetran-get-connection-state": {
     config: {
       title: "Get Connection State",
       description: "Retrieve the current state of a Fivetran connector",
@@ -202,7 +202,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "modify-connection": {
+  "fivetran-modify-connection": {
     config: {
       title: "Modify Connection",
       description: "Update a Fivetran connector configuration",
@@ -258,7 +258,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "modify-connection-state": {
+  "fivetran-modify-connection-state": {
     config: {
       title: "Modify Connection State",
       description: "Update the state of a Fivetran connector (pause/resume)",
@@ -282,7 +282,7 @@ export const tools: Record<string, Tool> = {
   },
 
   // ==================== DESTINATIONS ====================
-  "create-destination": {
+  "fivetran-create-destination": {
     config: {
       title: "Create Destination",
       description: "Create a new destination in a Fivetran group",
@@ -313,7 +313,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "list-destinations": {
+  "fivetran-list-destinations": {
     config: {
       title: "List Destinations",
       description: "Get all destinations in the account",
@@ -343,7 +343,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "get-destination-details": {
+  "fivetran-get-destination-details": {
     config: {
       title: "Get Destination Details",
       description: "Retrieve details of a specific destination",
@@ -366,7 +366,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "modify-destination": {
+  "fivetran-modify-destination": {
     config: {
       title: "Modify Destination",
       description: "Update a destination configuration",
@@ -393,7 +393,7 @@ export const tools: Record<string, Tool> = {
   },
 
   // ========== GROUPS ==========
-  "create-group": {
+  "fivetran-create-group": {
     config: {
       title: "Create Group",
       description: "Create a new Fivetran group",
@@ -414,7 +414,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "list-users-in-group": {
+  "fivetran-list-users-in-group": {
     config: {
       title: "List All Users in Group",
       description: "Get all users in a specific group",
@@ -445,7 +445,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "add-user-to-group": {
+  "fivetran-add-user-to-group": {
     config: {
       title: "Add User to Group",
       description: "Add a user to a Fivetran group with a specific role",
@@ -473,7 +473,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "modify-group": {
+  "fivetran-modify-group": {
     config: {
       title: "Modify Group",
       description: "Update a group's properties",
@@ -499,7 +499,7 @@ export const tools: Record<string, Tool> = {
   },
 
   // ========== USERS ==========
-  "list-all-users": {
+  "fivetran-list-all-users": {
     config: {
       title: "List All Users",
       description: "Get all users in the account",
@@ -520,7 +520,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "get-user-details": {
+  "fivetran-get-user-details": {
     config: {
       title: "Get User Details",
       description: "Retrieve details of a specific user",
@@ -541,7 +541,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "modify-user": {
+  "fivetran-modify-user": {
     config: {
       title: "Modify User",
       description: "Update a user's properties",
@@ -575,7 +575,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "update-user-connection-membership": {
+  "fivetran-update-user-connection-membership": {
     config: {
       title: "Update User Membership in Connection",
       description: "Update a user's role in a specific connection",
@@ -601,7 +601,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "update-user-group-membership": {
+  "fivetran-update-user-group-membership": {
     config: {
       title: "Update User Membership in Group",
       description: "Update a user's role in a specific group",

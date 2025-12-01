@@ -3,7 +3,7 @@ import { Tool, axiosInstance } from "./utils.js";
 
 export const tools: Record<string, Tool> = {
   // ==================== QUERIES & CARDS ====================
-  "list-questions": {
+  "metabase-list-questions": {
     config: {
       title: "List Questions",
       description: "Get all saved questions/cards in Metabase",
@@ -28,7 +28,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "get-question": {
+  "metabase-get-question": {
     config: {
       title: "Get Question Details",
       description: "Get details of a specific question/card by ID",
@@ -49,7 +49,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "execute-question": {
+  "metabase-execute-question": {
     config: {
       title: "Execute Question Query",
       description: "Execute a saved question and get the results",
@@ -76,7 +76,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "create-question": {
+  "metabase-create-question": {
     config: {
       title: "Create Question",
       description: "Create a new question/card in Metabase",
@@ -123,7 +123,7 @@ export const tools: Record<string, Tool> = {
   },
 
   // ==================== NATIVE QUERIES ====================
-  "execute-native-query": {
+  "metabase-execute-native-query": {
     config: {
       title: "Execute Native Query",
       description: "Execute a native SQL query or MBQL query",
@@ -154,7 +154,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "export-query-results": {
+  "metabase-export-query-results": {
     config: {
       title: "Export Query Results",
       description:
@@ -183,7 +183,7 @@ export const tools: Record<string, Tool> = {
   },
 
   // ==================== DASHBOARDS ====================
-  "list-dashboards": {
+  "metabase-list-dashboards": {
     config: {
       title: "List Dashboards",
       description: "Get all dashboards in Metabase",
@@ -207,7 +207,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "get-dashboard": {
+  "metabase-get-dashboard": {
     config: {
       title: "Get Dashboard",
       description: "Get details of a specific dashboard including its cards",
@@ -228,7 +228,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "create-dashboard": {
+  "metabase-create-dashboard": {
     config: {
       title: "Create Dashboard",
       description: "Create a new dashboard",
@@ -255,7 +255,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "update-dashboard": {
+  "metabase-update-dashboard": {
     config: {
       title: "Update Dashboard",
       description:
@@ -304,7 +304,7 @@ export const tools: Record<string, Tool> = {
   },
 
   // ==================== DATABASES ====================
-  "list-databases": {
+  "metabase-list-databases": {
     config: {
       title: "List Databases",
       description: "Get all connected databases",
@@ -332,7 +332,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "get-database-metadata": {
+  "metabase-get-database-metadata": {
     config: {
       title: "Get Database Metadata",
       description: "Get metadata (tables, fields) for a database",
@@ -355,7 +355,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "get-database-schemas": {
+  "metabase-get-database-schemas": {
     config: {
       title: "Get Database Schemas",
       description: "Get available schemas for a database",
@@ -379,7 +379,7 @@ export const tools: Record<string, Tool> = {
   },
 
   // ==================== TABLES ====================
-  "get-table-metadata": {
+  "metabase-get-table-metadata": {
     config: {
       title: "Get Table Metadata",
       description: "Get metadata for a specific table",
@@ -403,7 +403,7 @@ export const tools: Record<string, Tool> = {
   },
 
   // ==================== COLLECTIONS ====================
-  "list-collections": {
+  "metabase-list-collections": {
     config: {
       title: "List Collections",
       description: "Get all collections",
@@ -422,7 +422,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "get-collection-items": {
+  "metabase-get-collection-items": {
     config: {
       title: "Get Collection Items",
       description: "Get all items (questions, dashboards) in a collection",
@@ -448,7 +448,7 @@ export const tools: Record<string, Tool> = {
   },
 
   // ==================== SEARCH ====================
-  "search-metabase": {
+  "metabase-search-metabase": {
     config: {
       title: "Search Metabase",
       description:
@@ -482,7 +482,7 @@ export const tools: Record<string, Tool> = {
   },
 
   // ==================== ACTIVITY ====================
-  "get-recent-activity": {
+  "metabase-get-recent-activity": {
     config: {
       title: "Get Recent Activity",
       description: "Get recent activity feed in Metabase",
@@ -505,7 +505,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "get-recent-views": {
+  "metabase-get-recent-views": {
     config: {
       title: "Get Recent Views",
       description: "Get recently viewed items by the current user",
@@ -525,7 +525,7 @@ export const tools: Record<string, Tool> = {
   },
 
   // ==================== USERS ====================
-  "get-current-user": {
+  "metabase-get-current-user": {
     config: {
       title: "Get Current User",
       description: "Get information about the currently authenticated user",
@@ -544,7 +544,7 @@ export const tools: Record<string, Tool> = {
     },
   },
 
-  "list-users": {
+  "metabase-list-users": {
     config: {
       title: "List Users",
       description: "Get all users in Metabase (requires admin)",
