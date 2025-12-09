@@ -79,11 +79,19 @@ export const tools: Record<string, Tool> = {
   "metabase-create-question": {
     config: {
       title: "Create Question",
-      description: "Create a new question/card in Metabase",
+      description:
+        "Create a new question/card in Metabase. IMPORTANT: When type is 'metric', the query.query object MUST include an 'aggregation' field (e.g., 'aggregation': [['count']] or other aggregation functions like sum, avg, etc.)",
       inputSchema: {
         name: z.string().describe("Question name"),
         description: z.string().optional().describe("Question description"),
         databaseId: z.number().describe("Database ID"),
+        type: z.enum(["question", "metric", "model"]).describe("Query type"),
+        visualization_settings: z
+          .object({
+            text: z.string().optional().describe("Text for text cards"),
+          })
+          .describe("Visualization settings"),
+        display: z.enum(["table", "text", "chart"]).describe("Display type"),
         query: z
           .object({
             type: z.enum(["query", "native"]),
@@ -95,22 +103,27 @@ export const tools: Record<string, Tool> = {
               .optional(),
             query: z.any().optional(),
           })
-          .describe("Query object (MBQL or native SQL)"),
+          .describe(
+            "Query object (MBQL or native SQL). For metrics, query.query must include 'aggregation' field with an aggregation function like [['count']], [['sum', fieldRef]], etc."
+          ),
         collectionId: z
           .number()
           .optional()
           .describe("Collection ID to save to"),
       },
     },
-    handler: async ({ name, description, query, collectionId }: any) => {
-      const response = await axiosInstance.post(`/api/card`, {
-        name,
-        description,
+    handler: async ({ query, display, ...config }: any) => {
+      const payload: any = {
         dataset_query: query,
-        display: "table",
-        visualization_settings: {},
-        collection_id: collectionId,
-      });
+        display,
+        name: config.name,
+        visualization_settings: config.visualization_settings,
+        type: config.type,
+        description: config.description ?? undefined,
+        collection_id: config.collectionId ?? undefined,
+      };
+
+      const response = await axiosInstance.post(`/api/card`, payload);
       return {
         content: [
           {
@@ -195,6 +208,7 @@ export const tools: Record<string, Tool> = {
       const url = collectionId
         ? `/api/dashboard?f=all&collection=${collectionId}`
         : "/api/dashboard";
+
       const response = await axiosInstance.get(url);
       return {
         content: [
@@ -391,6 +405,64 @@ export const tools: Record<string, Tool> = {
       const response = await axiosInstance.get(
         `/api/table/${tableId}/query_metadata`
       );
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(response.data, null, 2),
+          },
+        ],
+      };
+    },
+  },
+
+  "metabase-update-table-metadata": {
+    config: {
+      title: "Update Table Metadata",
+      description: "Update metadata for a specific table",
+      inputSchema: {
+        tableId: z.number().describe("Table ID"),
+        description: z
+          .string()
+          .min(1)
+          .describe("New table description")
+          .optional(),
+      },
+    },
+    handler: async ({ tableId, description }: any) => {
+      const response = await axiosInstance.put(`/api/table/${tableId}`, {
+        description,
+      });
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(response.data, null, 2),
+          },
+        ],
+      };
+    },
+  },
+
+  // ==================== FIELDS ====================
+
+  "metabase-update-field-metadata": {
+    config: {
+      title: "Update Field Metadata",
+      description: "Update metadata for a specific field/column",
+      inputSchema: {
+        fieldId: z.number().describe("Field ID"),
+        description: z
+          .string()
+          .min(1)
+          .describe("New field description")
+          .optional(),
+      },
+    },
+    handler: async ({ fieldId, description }: any) => {
+      const response = await axiosInstance.put(`/api/field/${fieldId}`, {
+        description,
+      });
       return {
         content: [
           {

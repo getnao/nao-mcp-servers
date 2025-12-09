@@ -1,6 +1,6 @@
 {
   "name": "@getnao/metabase-mcp-server",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A Model Context Protocol server, designed by Nao Labs to interact with Metabase.",
   "bin": {
     "metabase-mcp-server": "dist/index.js"
