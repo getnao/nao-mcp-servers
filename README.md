@@ -15,7 +15,7 @@ A library of Model Context Protocol servers for various integrations.
       "env": {
         "METABASE_URL": <YOUR_METABASE_URL>,
         "METABASE_API_KEY": <YOUR_METABASE_API_KEY>
-      },
+      }
     }
   }
 }
@@ -32,8 +32,8 @@ A library of Model Context Protocol servers for various integrations.
         "@getnao/fivetran-mcp-server@latest"
       ],
       "env": {
-        "FIVETRAN_BASE_64_API_KEY": <YOUR_FIVETRAN_BASE_64_API_KEY>,
-      },
+        "FIVETRAN_BASE_64_API_KEY": <YOUR_FIVETRAN_BASE_64_API_KEY>
+      }
     }
   }
 }
