@@ -86,12 +86,65 @@ export const tools: Record<string, Tool> = {
         description: z.string().optional().describe("Question description"),
         databaseId: z.number().describe("Database ID"),
         type: z.enum(["question", "metric", "model"]).describe("Query type"),
+        display: z
+          .enum(["table", "text", "chart", "bar", "line", "scalar"])
+          .describe("Display type"),
         visualization_settings: z
           .object({
-            text: z.string().optional().describe("Text for text cards"),
+            text: z
+              .string()
+              .optional()
+              .describe("Text for text cards (only for display='text')"),
+            graph_dimensions: z
+              .array(z.string())
+              .optional()
+              .describe(
+                "Graph X axis dimensions (for display='chart' or 'bar')"
+              ),
+            graph_metrics: z
+              .array(z.string())
+              .optional()
+              .describe("Graph Y axis metrics (for display='chart' or 'bar')"),
+            graph_show_values: z
+              .boolean()
+              .optional()
+              .describe(
+                "Show values on graph (only for display='chart' or 'bar')"
+              ),
+            graph_x_axis_scale: z
+              .enum(["ordinal", "linear", "log"])
+              .optional()
+              .describe("X axis scale (only for display='chart' or 'bar')"),
+            graph_y_axis_scale: z
+              .enum(["ordinal", "linear", "log"])
+              .optional()
+              .describe("Y axis scale (only for display='chart' or 'bar')"),
+            line_interpolate: z
+              .string()
+              .optional()
+              .describe("Line interpolation (only for display='line')"),
+            line_marker_enabled: z
+              .boolean()
+              .optional()
+              .describe("Line marker enabled (only for display='line')"),
+            scalar_field: z
+              .string()
+              .optional()
+              .describe(
+                "Field to display as scalar value (only for display='scalar')"
+              ),
+            number_style: z
+              .enum(["decimal", "currency", "percent", "scientific"])
+              .optional()
+              .describe("Number formatting style (only for display='scalar')"),
+            currency: z
+              .string()
+              .optional()
+              .describe(
+                "Currency code like 'USD', 'EUR' (only for display='scalar' with number_style='currency')"
+              ),
           })
           .describe("Visualization settings"),
-        display: z.enum(["table", "text", "chart"]).describe("Display type"),
         query: z
           .object({
             type: z.enum(["query", "native"]),
@@ -113,11 +166,43 @@ export const tools: Record<string, Tool> = {
       },
     },
     handler: async ({ query, display, ...config }: any) => {
+      const filteredSettings: any = {};
+      const settings = config.visualization_settings || {};
+
+      if (settings.text !== undefined) {
+        filteredSettings.text = settings.text;
+      }
+
+      if (display === "chart" || display === "bar" || display === "line") {
+        filteredSettings.graph_dimensions =
+          settings.graph_dimensions ?? undefined;
+        filteredSettings.graph_metrics = settings.graph_metrics ?? undefined;
+        filteredSettings.graph_show_values =
+          settings.graph_show_values ?? undefined;
+        filteredSettings.graph_x_axis_scale =
+          settings.graph_x_axis_scale ?? undefined;
+        filteredSettings.graph_y_axis_scale =
+          settings.graph_y_axis_scale ?? undefined;
+      }
+
+      if (display === "line") {
+        filteredSettings.line_interpolate =
+          settings.line_interpolate ?? undefined;
+        filteredSettings.line_marker_enabled =
+          settings.line_marker_enabled ?? undefined;
+      }
+
+      if (display === "scalar") {
+        filteredSettings.scalar_field = settings.scalar_field ?? undefined;
+        filteredSettings.number_style = settings.number_style ?? undefined;
+        filteredSettings.currency = settings.currency ?? undefined;
+      }
+
       const payload: any = {
         dataset_query: query,
         display,
         name: config.name,
-        visualization_settings: config.visualization_settings,
+        visualization_settings: filteredSettings,
         type: config.type,
         description: config.description ?? undefined,
         collection_id: config.collectionId ?? undefined,
