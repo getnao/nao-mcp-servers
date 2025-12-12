@@ -393,12 +393,44 @@ export const tools: Record<string, Tool> = {
   },
 
   // ========== GROUPS ==========
+  "fivetran-list-groups": {
+    config: {
+      title: "List Groups",
+      description: "Get all groups in the account",
+      inputSchema: {
+        limit: z.number().optional().describe("Maximum number of results"),
+        cursor: z.string().optional().describe("Pagination cursor"),
+      },
+    },
+    handler: async ({ limit, cursor }: any) => {
+      const params = [];
+      if (limit) params.push(`limit=${limit}`);
+      if (cursor) params.push(`cursor=${cursor}`);
+
+      const url = params.length ? `/groups?${params.join("&")}` : `/groups`;
+
+      const response = await axiosInstance.get(url);
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(response.data, null, 2),
+          },
+        ],
+      };
+    },
+  },
+
   "fivetran-create-group": {
     config: {
       title: "Create Group",
       description: "Create a new Fivetran group",
       inputSchema: {
-        name: z.string().describe("The group name"),
+        name: z
+          .string()
+          .describe(
+            "The group name. Exclude special characters like '-' or '@'"
+          ),
       },
     },
     handler: async ({ name }: any) => {
