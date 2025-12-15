@@ -11,7 +11,6 @@ export const tools: Record<string, Tool> = {
         connectionId: z.string().describe("The connector ID"),
         redirectUri: z
           .string()
-          .url()
           .describe(
             "Redirect URI after setup (must start with http:// or https://)"
           ),

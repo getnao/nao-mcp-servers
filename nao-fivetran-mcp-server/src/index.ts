@@ -9,7 +9,7 @@ class FivetranServer {
   constructor() {
     this.mcpServer = new McpServer({
       name: "Fivetran Server",
-      version: "1.2.1",
+      version: "1.2.2",
     });
 
     this.registerTools();
