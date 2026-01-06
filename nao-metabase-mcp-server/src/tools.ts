@@ -625,6 +625,7 @@ export const tools: Record<string, Tool> = {
       if (models) {
         models.forEach((m: any) => params.append("models", m));
       }
+      params.append("search_native_query", "true");
 
       const response = await axiosInstance.get(`/api/search?${params}`);
       return {
