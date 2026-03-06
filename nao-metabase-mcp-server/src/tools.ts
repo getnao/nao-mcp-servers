@@ -63,7 +63,7 @@ export const tools: Record<string, Tool> = {
         `/api/card/${questionId}/query`,
         {
           parameters: parameters || {},
-        }
+        },
       );
       return {
         content: [
@@ -99,7 +99,7 @@ export const tools: Record<string, Tool> = {
               .array(z.string())
               .optional()
               .describe(
-                "Graph X axis dimensions (for display='chart' or 'bar')"
+                "Graph X axis dimensions (for display='chart' or 'bar')",
               ),
             graph_metrics: z
               .array(z.string())
@@ -109,7 +109,7 @@ export const tools: Record<string, Tool> = {
               .boolean()
               .optional()
               .describe(
-                "Show values on graph (only for display='chart' or 'bar')"
+                "Show values on graph (only for display='chart' or 'bar')",
               ),
             graph_x_axis_scale: z
               .enum(["ordinal", "linear", "log"])
@@ -131,7 +131,7 @@ export const tools: Record<string, Tool> = {
               .string()
               .optional()
               .describe(
-                "Field to display as scalar value (only for display='scalar')"
+                "Field to display as scalar value (only for display='scalar')",
               ),
             number_style: z
               .enum(["decimal", "currency", "percent", "scientific"])
@@ -141,7 +141,7 @@ export const tools: Record<string, Tool> = {
               .string()
               .optional()
               .describe(
-                "Currency code like 'USD', 'EUR' (only for display='scalar' with number_style='currency')"
+                "Currency code like 'USD', 'EUR' (only for display='scalar' with number_style='currency')",
               ),
           })
           .describe("Visualization settings"),
@@ -152,12 +152,24 @@ export const tools: Record<string, Tool> = {
             native: z
               .object({
                 query: z.string(),
+                "template-tags": z
+                  .record(
+                    z.object({
+                      id: z.string(),
+                      name: z.string(),
+                      "display-name": z.string(),
+                      type: z.string(),
+                      required: z.boolean().optional(),
+                    }),
+                  )
+                  .optional()
+                  .describe("Template tags for native query parameters"),
               })
               .optional(),
             query: z.any().optional(),
           })
           .describe(
-            "Query object (MBQL or native SQL). For metrics, query.query must include 'aggregation' field with an aggregation function like [['count']], [['sum', fieldRef]], etc."
+            "Query object (MBQL or native SQL). For metrics, query.query must include 'aggregation' field with an aggregation function like [['count']], [['sum', fieldRef]], etc.",
           ),
         collectionId: z
           .number()
@@ -380,7 +392,16 @@ export const tools: Record<string, Tool> = {
                 .describe("Row position (must be >= 0)"),
               size_x: z.number().int().min(1).describe("Width (must be >= 1)"),
               size_y: z.number().int().min(1).describe("Height (must be >= 1)"),
-            })
+              parameter_mappings: z
+                .array(
+                  z.object({
+                    parameter_id: z.string().describe("The parameter ID"),
+                    target: z.array(z.unknown()).describe("The target mapping"),
+                  }),
+                )
+                .optional()
+                .describe("Parameter mappings for the dashcard"),
+            }),
           )
           .optional(),
       },
@@ -441,7 +462,7 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ databaseId }: any) => {
       const response = await axiosInstance.get(
-        `/api/database/${databaseId}/metadata`
+        `/api/database/${databaseId}/metadata`,
       );
       return {
         content: [
@@ -464,7 +485,7 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ databaseId }: any) => {
       const response = await axiosInstance.get(
-        `/api/database/${databaseId}/schemas`
+        `/api/database/${databaseId}/schemas`,
       );
       return {
         content: [
@@ -488,7 +509,7 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ tableId }: any) => {
       const response = await axiosInstance.get(
-        `/api/table/${tableId}/query_metadata`
+        `/api/table/${tableId}/query_metadata`,
       );
       return {
         content: [
@@ -591,7 +612,7 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ collectionId }: any) => {
       const response = await axiosInstance.get(
-        `/api/collection/${collectionId}/items`
+        `/api/collection/${collectionId}/items`,
       );
       return {
         content: [
@@ -614,7 +635,7 @@ export const tools: Record<string, Tool> = {
         query: z.string().describe("Search query"),
         models: z
           .array(
-            z.enum(["card", "dashboard", "collection", "table", "database"])
+            z.enum(["card", "dashboard", "collection", "table", "database"]),
           )
           .optional()
           .describe("Limit search to specific models"),
