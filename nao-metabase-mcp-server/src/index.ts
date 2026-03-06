@@ -2,6 +2,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { tools } from "./tools.js";
+import { createRequire } from "module";
+const { version } = createRequire(import.meta.url)("../package.json");
 
 class MetabaseServer {
   private mcpServer: McpServer;
@@ -9,7 +11,7 @@ class MetabaseServer {
   constructor() {
     this.mcpServer = new McpServer({
       name: "Metabase Server",
-      version: "0.4.2",
+      version,
     });
 
     this.registerTools();
