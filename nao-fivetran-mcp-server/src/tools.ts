@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { Tool, axiosInstance } from "./utils.js";
+import { format } from "./formatters.js";
 
 export const tools: Record<string, Tool> = {
   // ==================== CONNECTIONS ====================
@@ -12,7 +13,7 @@ export const tools: Record<string, Tool> = {
         redirectUri: z
           .string()
           .describe(
-            "Redirect URI after setup (must start with http:// or https://)"
+            "Redirect URI after setup (must start with http:// or https://)",
           ),
         hideSetupGuide: z
           .boolean()
@@ -28,13 +29,13 @@ export const tools: Record<string, Tool> = {
             redirect_uri: redirectUri,
             hide_setup_guide: hideSetupGuide,
           },
-        }
+        },
       );
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { title: "Connect Card Created" }),
           },
         ],
       };
@@ -50,7 +51,7 @@ export const tools: Record<string, Tool> = {
         service: z
           .string()
           .describe(
-            "The connector service type (e.g., 'google_ads', 'salesforce')"
+            "The connector service type (e.g., 'google_ads', 'salesforce')",
           ),
         trustCertificates: z
           .boolean()
@@ -77,7 +78,7 @@ export const tools: Record<string, Tool> = {
           .string()
           .optional()
           .describe(
-            "Daily sync time (HH:MM format, requires sync_frequency=1440)"
+            "Daily sync time (HH:MM format, requires sync_frequency=1440)",
           ),
         scheduleType: z
           .enum(["auto", "manual"])
@@ -118,7 +119,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "connection",
+              title: "Connection Created",
+            }),
           },
         ],
       };
@@ -150,7 +154,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "connection",
+              title: "Connections",
+            }),
           },
         ],
       };
@@ -171,7 +178,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "connection",
+              title: `Connection ${connectionId}`,
+            }),
           },
         ],
       };
@@ -188,13 +198,13 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ connectionId }: any) => {
       const response = await axiosInstance.get(
-        `/connections/${connectionId}/state`
+        `/connections/${connectionId}/state`,
       );
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { title: "Connection State" }),
           },
         ],
       };
@@ -236,21 +246,24 @@ export const tools: Record<string, Tool> = {
         paused: config.paused ?? undefined,
         sync_frequency: config.syncFrequency ?? undefined,
         daily_sync_time: config.dailySyncTime ?? undefined,
-        schedule_type: config.scheduleType ?? undefined,
-        run_setup_tests: config.runSetupTests ?? undefined,
-        trust_certificates: config.trustCertificates ?? undefined,
-        trust_fingerprints: config.trustFingerprints ?? undefined,
+        schedule_type: config.schedule_type ?? undefined,
+        run_setup_tests: config.run_setup_tests ?? undefined,
+        trust_certificates: config.trust_certificates ?? undefined,
+        trust_fingerprints: config.trust_fingerprints ?? undefined,
       };
 
       const response = await axiosInstance.patch(
         `/connections/${connectionId}`,
-        payload
+        payload,
       );
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "connection",
+              title: "Connection Modified",
+            }),
           },
         ],
       };
@@ -267,13 +280,13 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ connectionId }: any) => {
       const response = await axiosInstance.patch(
-        `/connections/${connectionId}/state`
+        `/connections/${connectionId}/state`,
       );
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { title: "State Modified" }),
           },
         ],
       };
@@ -290,7 +303,7 @@ export const tools: Record<string, Tool> = {
         service: z
           .string()
           .describe(
-            "Destination service type (e.g., 'snowflake', 'bigquery', 'redshift')"
+            "Destination service type (e.g., 'snowflake', 'bigquery', 'redshift')",
           ),
       },
     },
@@ -305,7 +318,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "destination",
+              title: "Destination Created",
+            }),
           },
         ],
       };
@@ -335,7 +351,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "destination",
+              title: "Destinations",
+            }),
           },
         ],
       };
@@ -352,13 +371,16 @@ export const tools: Record<string, Tool> = {
     },
     handler: async ({ destinationId }: any) => {
       const response = await axiosInstance.get(
-        `/destinations/${destinationId}`
+        `/destinations/${destinationId}`,
       );
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "destination",
+              title: `Destination ${destinationId}`,
+            }),
           },
         ],
       };
@@ -378,13 +400,16 @@ export const tools: Record<string, Tool> = {
 
       const response = await axiosInstance.patch(
         `/destinations/${destinationId}`,
-        payload
+        payload,
       );
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "destination",
+              title: "Destination Modified",
+            }),
           },
         ],
       };
@@ -413,7 +438,7 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { model: "group", title: "Groups" }),
           },
         ],
       };
@@ -428,7 +453,7 @@ export const tools: Record<string, Tool> = {
         name: z
           .string()
           .describe(
-            "The group name. Exclude special characters like '-' or '@'"
+            "The group name. Exclude special characters like '-' or '@'",
           ),
       },
     },
@@ -438,7 +463,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "group",
+              title: "Group Created",
+            }),
           },
         ],
       };
@@ -469,7 +497,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "user",
+              title: `Users in Group ${groupId}`,
+            }),
           },
         ],
       };
@@ -497,7 +528,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "user",
+              title: "User Added to Group",
+            }),
           },
         ],
       };
@@ -522,7 +556,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "group",
+              title: "Group Modified",
+            }),
           },
         ],
       };
@@ -544,7 +581,7 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { model: "user", title: "All Users" }),
           },
         ],
       };
@@ -565,7 +602,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "user",
+              title: `User ${userId}`,
+            }),
           },
         ],
       };
@@ -599,7 +639,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "user",
+              title: "User Modified",
+            }),
           },
         ],
       };
@@ -619,13 +662,13 @@ export const tools: Record<string, Tool> = {
     handler: async ({ userId, connectionId, role }: any) => {
       const response = await axiosInstance.patch(
         `/users/${userId}/connections/${connectionId}`,
-        { role }
+        { role },
       );
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { title: "Membership Updated" }),
           },
         ],
       };
@@ -645,13 +688,13 @@ export const tools: Record<string, Tool> = {
     handler: async ({ userId, groupId, role }: any) => {
       const response = await axiosInstance.patch(
         `/users/${userId}/groups/${groupId}`,
-        { role }
+        { role },
       );
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { title: "Membership Updated" }),
           },
         ],
       };
