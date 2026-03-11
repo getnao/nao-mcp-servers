@@ -232,6 +232,65 @@ export const tools: Record<string, Tool> = {
     },
   },
 
+  "metabase-update-question": {
+    config: {
+      title: "Update Question",
+      description:
+        "Update an existing question/card in Metabase. Only the fields provided will be updated.",
+      inputSchema: {
+        id: z.number().describe("Question/Card ID to update"),
+        name: z.string().optional().describe("New question name"),
+        description: z.string().optional().describe("New question description"),
+        type: z
+          .enum(["question", "metric", "model"])
+          .optional()
+          .describe("Query type"),
+        display: z
+          .string()
+          .optional()
+          .describe("Display type (e.g. table, bar, line, scalar)"),
+        visualization_settings: z
+          .record(z.any())
+          .optional()
+          .describe(
+            "Visualization settings as a free-form object (keys depend on display type)",
+          ),
+        dataset_query: z
+          .record(z.any())
+          .optional()
+          .describe("Query object (MBQL or native SQL)"),
+        collection_id: z
+          .number()
+          .optional()
+          .describe("Collection ID to move the question to"),
+        archived: z
+          .boolean()
+          .optional()
+          .describe("Archive or unarchive the question"),
+        parameters: z
+          .array(z.any())
+          .optional()
+          .describe("Question parameters (filters)"),
+      },
+    },
+    handler: async ({ id, ...config }: any) => {
+      const payload: any = {};
+      for (const [key, value] of Object.entries(config)) {
+        if (value !== undefined) payload[key] = value;
+      }
+
+      const response = await axiosInstance.put(`/api/card/${id}`, payload);
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(response.data, null, 2),
+          },
+        ],
+      };
+    },
+  },
+
   // ==================== NATIVE QUERIES ====================
   "metabase-execute-native-query": {
     config: {
@@ -392,15 +451,6 @@ export const tools: Record<string, Tool> = {
                 .describe("Row position (must be >= 0)"),
               size_x: z.number().int().min(1).describe("Width (must be >= 1)"),
               size_y: z.number().int().min(1).describe("Height (must be >= 1)"),
-              parameter_mappings: z
-                .array(
-                  z.object({
-                    parameter_id: z.string().describe("The parameter ID"),
-                    target: z.array(z.unknown()).describe("The target mapping"),
-                  }),
-                )
-                .optional()
-                .describe("Parameter mappings for the dashcard"),
             }),
           )
           .optional(),
