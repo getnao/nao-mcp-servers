@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { Tool, axiosInstance } from "./utils.js";
+import { format } from "./formatters.js";
 
 export const tools: Record<string, Tool> = {
   // ==================== QUERIES & CARDS ====================
@@ -21,7 +22,7 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { model: "card", title: "Questions" }),
           },
         ],
       };
@@ -42,7 +43,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "card",
+              title: `Question #${questionId}`,
+            }),
           },
         ],
       };
@@ -69,7 +73,9 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              title: `Results for Question #${questionId}`,
+            }),
           },
         ],
       };
@@ -225,7 +231,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "card",
+              title: "Question Created",
+            }),
           },
         ],
       };
@@ -284,7 +293,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "card",
+              title: "Question Updated",
+            }),
           },
         ],
       };
@@ -316,7 +328,7 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { title: "Query Results", query }),
           },
         ],
       };
@@ -334,19 +346,26 @@ export const tools: Record<string, Tool> = {
         format: z.enum(["json", "csv", "xlsx"]).describe("Export format"),
       },
     },
-    handler: async ({ databaseId, query, format }: any) => {
-      const response = await axiosInstance.post(`/api/dataset/${format}`, {
-        database: databaseId,
-        type: "native",
-        native: { query },
-      });
+    handler: async ({ databaseId, query, format: exportFormat }: any) => {
+      const response = await axiosInstance.post(
+        `/api/dataset/${exportFormat}`,
+        {
+          database: databaseId,
+          type: "native",
+          native: { query },
+        },
+      );
+
+      // If JSON, we can format it, otherwise return as is
+      const text =
+        exportFormat === "json"
+          ? format(response.data, { title: "Export Results", query })
+          : typeof response.data === "string"
+            ? response.data
+            : JSON.stringify(response.data, null, 2);
+
       return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(response.data, null, 2),
-          },
-        ],
+        content: [{ type: "text", text }],
       };
     },
   },
@@ -370,7 +389,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "dashboard",
+              title: "Dashboards",
+            }),
           },
         ],
       };
@@ -391,7 +413,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "dashboard",
+              title: `Dashboard #${dashboardId}`,
+            }),
           },
         ],
       };
@@ -418,7 +443,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "dashboard",
+              title: "Dashboard Created",
+            }),
           },
         ],
       };
@@ -466,7 +494,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "dashboard",
+              title: "Dashboard Updated",
+            }),
           },
         ],
       };
@@ -495,7 +526,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "database",
+              title: "Databases",
+            }),
           },
         ],
       };
@@ -518,7 +552,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "database",
+              title: `Metadata for Database #${databaseId}`,
+            }),
           },
         ],
       };
@@ -539,10 +576,7 @@ export const tools: Record<string, Tool> = {
       );
       return {
         content: [
-          {
-            type: "text",
-            text: JSON.stringify(response.data, null, 2),
-          },
+          { type: "text", text: format(response.data, { title: "Schemas" }) },
         ],
       };
     },
@@ -565,7 +599,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "table",
+              title: `Metadata for Table #${tableId}`,
+            }),
           },
         ],
       };
@@ -593,7 +630,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "table",
+              title: "Table Updated",
+            }),
           },
         ],
       };
@@ -623,7 +663,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "field",
+              title: "Field Updated",
+            }),
           },
         ],
       };
@@ -643,7 +686,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "collection",
+              title: "Collections",
+            }),
           },
         ],
       };
@@ -668,7 +714,9 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              title: `Items in Collection #${collectionId}`,
+            }),
           },
         ],
       };
@@ -703,7 +751,7 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { title: "Search Results" }),
           },
         ],
       };
@@ -727,7 +775,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "activity",
+              title: "Recent Activity",
+            }),
           },
         ],
       };
@@ -746,7 +797,7 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { title: "Recent Views" }),
           },
         ],
       };
@@ -766,7 +817,10 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, {
+              model: "user",
+              title: "Current User",
+            }),
           },
         ],
       };
@@ -785,7 +839,7 @@ export const tools: Record<string, Tool> = {
         content: [
           {
             type: "text",
-            text: JSON.stringify(response.data, null, 2),
+            text: format(response.data, { model: "user", title: "Users" }),
           },
         ],
       };
