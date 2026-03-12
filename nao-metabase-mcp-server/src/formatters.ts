@@ -45,7 +45,9 @@ const MODEL_FIELDS: Record<string, string[]> = {
  * Formats a list of items as a Markdown table.
  */
 function formatTable(items: any[], fields?: string[]): string {
-  if (!items || items.length === 0) return "_No items found._";
+  if (!items || items.length === 0) {
+    return "_No items found._";
+  }
 
   // Auto-detect columns if not provided
   const cols =
@@ -54,7 +56,9 @@ function formatTable(items: any[], fields?: string[]): string {
       .filter((k) => !NOISE_FIELDS.has(k) && typeof items[0][k] !== "object")
       .slice(0, 10);
 
-  if (cols.length === 0) return "_Items found but no displayable fields._";
+  if (cols.length === 0) {
+    return "_Items found but no displayable fields._";
+  }
 
   const header = `| ${cols.map(capitalize).join(" | ")} |`;
   const separator = `| ${cols.map(() => "---").join(" | ")} |`;
@@ -83,7 +87,9 @@ function formatTable(items: any[], fields?: string[]): string {
  * Formats a single object as a list of key-value pairs or sections.
  */
 function formatObject(data: any, fields?: string[]): string {
-  if (!data) return "No data returned.";
+  if (!data) {
+    return "No data returned.";
+  }
 
   const entries = fields
     ? fields.map((f) => [
@@ -119,7 +125,9 @@ function formatQueryResults(data: any): string {
   const cols: any[] = inner.cols ?? inner.columns ?? [];
   const rows: any[][] = inner.rows ?? [];
 
-  if (cols.length === 0 && rows.length === 0) return "No results returned.";
+  if (cols.length === 0 && rows.length === 0) {
+    return "No results returned.";
+  }
 
   const headers = cols.map((c: any) => c.display_name ?? c.name ?? "?");
   const separator = headers.map(() => "---");
@@ -147,13 +155,19 @@ export function format(
   data: any,
   options: { model?: string; title?: string; query?: string } = {},
 ): string {
-  if (!data) return "No data returned.";
+  if (!data) {
+    return "No data returned.";
+  }
 
   const { model, title, query } = options;
   const lines: string[] = [];
 
-  if (title) lines.push(`## ${title}`);
-  if (query) lines.push(`**Query:** \`${query}\`\n`);
+  if (title) {
+    lines.push(`## ${title}`);
+  }
+  if (query) {
+    lines.push(`**Query:** \`${query}\`\n`);
+  }
 
   // Handle Query Results (Special Case)
   if ((data.cols && data.rows) || (data.data?.cols && data.data?.rows)) {
@@ -176,7 +190,9 @@ export function format(
       const grouped: Record<string, any[]> = {};
       items.forEach((item: any) => {
         const m = item.model ?? "unknown";
-        if (!grouped[m]) grouped[m] = [];
+        if (!grouped[m]) {
+          grouped[m] = [];
+        }
         grouped[m].push(item);
       });
 

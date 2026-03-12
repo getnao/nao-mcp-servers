@@ -37,7 +37,9 @@ const MODEL_FIELDS: Record<string, string[]> = {
  * Formats a list of items as a Markdown table.
  */
 function formatTable(items: any[], fields?: string[]): string {
-  if (!items || items.length === 0) return "_No items found._";
+  if (!items || items.length === 0) {
+    return "_No items found._";
+  }
 
   // Auto-detect columns if not provided
   const cols =
@@ -46,7 +48,9 @@ function formatTable(items: any[], fields?: string[]): string {
       .filter((k) => !NOISE_FIELDS.has(k) && typeof items[0][k] !== "object")
       .slice(0, 10);
 
-  if (cols.length === 0) return "_Items found but no displayable fields._";
+  if (cols.length === 0) {
+    return "_Items found but no displayable fields._";
+  }
 
   const header = `| ${cols.map(capitalize).join(" | ")} |`;
   const separator = `| ${cols.map(() => "---").join(" | ")} |`;
@@ -73,7 +77,9 @@ function formatTable(items: any[], fields?: string[]): string {
  * Formats a single object as a list of key-value pairs or sections.
  */
 function formatObject(data: any, fields?: string[]): string {
-  if (!data) return "No data returned.";
+  if (!data) {
+    return "No data returned.";
+  }
 
   const entries = fields
     ? fields.map((f) => [
@@ -111,14 +117,18 @@ export function format(
   data: any,
   options: { model?: string; title?: string } = {},
 ): string {
-  if (!data) return "No data returned.";
+  if (!data) {
+    return "No data returned.";
+  }
 
   // Fivetran API wraps data in a "data" property
   const payload = data.data || data;
   const { model, title } = options;
   const lines: string[] = [];
 
-  if (title) lines.push(`## ${title}`);
+  if (title) {
+    lines.push(`## ${title}`);
+  }
 
   // Handle lists (Fivetran wraps lists in "items" property)
   const items = payload.items || (Array.isArray(payload) ? payload : null);
