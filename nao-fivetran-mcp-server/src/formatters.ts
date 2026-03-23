@@ -1,3 +1,5 @@
+import { useMarkdown } from "./utils.js";
+
 // Generic helpers
 const safe = (v: any): string =>
   v === null || v === undefined ? "—" : String(v);
@@ -32,6 +34,41 @@ const MODEL_FIELDS: Record<string, string[]> = {
   group: ["id", "name", "created_at"],
   user: ["id", "email", "given_name", "family_name", "role"],
 };
+
+// ── JSON-mode helpers ──
+
+function pickFields(obj: any, fields: string[]): any {
+  const result: any = {};
+  for (const f of fields) {
+    if (f.includes(".")) {
+      result[f] = f.split(".").reduce((o: any, k) => o?.[k], obj);
+    } else {
+      result[f] = obj[f];
+    }
+  }
+  return result;
+}
+
+function stripNoise(obj: any): any {
+  if (!obj || typeof obj !== "object") return obj;
+  const result: any = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (!NOISE_FIELDS.has(k)) result[k] = v;
+  }
+  return result;
+}
+
+function cleanJson(data: any, model?: string): any {
+  const fields = MODEL_FIELDS[model as string];
+  if (Array.isArray(data)) {
+    const sliced = data.slice(0, ROW_LIMIT);
+    return fields
+      ? sliced.map((item) => pickFields(item, fields))
+      : sliced.map((item) => stripNoise(item));
+  }
+  // Single objects: always use blacklist to preserve detail
+  return stripNoise(data);
+}
 
 /**
  * Formats a list of items as a Markdown table.
@@ -121,9 +158,16 @@ export function format(
     return "No data returned.";
   }
 
+  const { model, title } = options;
+
+  if (!useMarkdown) {
+    const payload = data.data || data;
+    const items = payload.items || (Array.isArray(payload) ? payload : null);
+    return JSON.stringify(cleanJson(items || payload, model), null, 2);
+  }
+
   // Fivetran API wraps data in a "data" property
   const payload = data.data || data;
-  const { model, title } = options;
   const lines: string[] = [];
 
   if (title) {
@@ -136,8 +180,8 @@ export function format(
   if (items) {
     lines.push(formatTable(items, MODEL_FIELDS[model as string]));
   } else {
-    // Single Object
-    lines.push(formatObject(payload, MODEL_FIELDS[model as string]));
+    // Single Object: use blacklist (no whitelist) to preserve detail
+    lines.push(formatObject(payload));
   }
 
   return lines.join("\n").trim();

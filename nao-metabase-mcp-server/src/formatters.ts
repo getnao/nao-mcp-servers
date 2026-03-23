@@ -1,3 +1,5 @@
+import { useMarkdown } from "./utils.js";
+
 // Generic helpers
 const safe = (v: any): string =>
   v === null || v === undefined ? "—" : String(v);
@@ -11,7 +13,6 @@ const ROW_LIMIT = 200;
 // Fields to exclude from almost all outputs to reduce noise
 const NOISE_FIELDS = new Set([
   "visualization_settings",
-  "dataset_query",
   "result_metadata",
   "creator_id",
   "made_public_by_id",
@@ -19,7 +20,6 @@ const NOISE_FIELDS = new Set([
   "last_edit_info",
   "moderation_reviews",
   "collection_authority_level",
-  "parameter_mappings",
   "points_of_interest",
   "caveats",
   "show_in_getting_started",
@@ -27,6 +27,10 @@ const NOISE_FIELDS = new Set([
   "collection_position",
   "archived",
   "revision_last_updated",
+  "features",
+  "cache_field_values_schedule",
+  "metadata_sync_schedule",
+  "dbms_version",
 ]);
 
 // Preferred fields for specific models (White list for important info)
@@ -40,6 +44,41 @@ const MODEL_FIELDS: Record<string, string[]> = {
   user: ["id", "email", "first_name", "last_name", "is_superuser"],
   activity: ["timestamp", "topic", "model", "model_id", "user_id"],
 };
+
+// ── JSON-mode helpers ──
+
+function pickFields(obj: any, fields: string[]): any {
+  const result: any = {};
+  for (const f of fields) {
+    if (f.includes(".")) {
+      result[f] = f.split(".").reduce((o: any, k) => o?.[k], obj);
+    } else {
+      result[f] = obj[f];
+    }
+  }
+  return result;
+}
+
+function stripNoise(obj: any): any {
+  if (!obj || typeof obj !== "object") return obj;
+  const result: any = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (!NOISE_FIELDS.has(k)) result[k] = v;
+  }
+  return result;
+}
+
+function cleanJson(data: any, model?: string): any {
+  const fields = MODEL_FIELDS[model as string];
+  if (Array.isArray(data)) {
+    const sliced = data.slice(0, ROW_LIMIT);
+    return fields
+      ? sliced.map((item) => pickFields(item, fields))
+      : sliced.map((item) => stripNoise(item));
+  }
+  // Single objects: always use blacklist to preserve detail
+  return stripNoise(data);
+}
 
 /**
  * Formats a list of items as a Markdown table.
@@ -160,6 +199,18 @@ export function format(
   }
 
   const { model, title, query } = options;
+
+  if (!useMarkdown) {
+    if ((data.cols && data.rows) || (data.data?.cols && data.data?.rows)) {
+      return JSON.stringify(data, null, 2);
+    }
+    const items = Array.isArray(data)
+      ? data
+      : data.data && Array.isArray(data.data)
+        ? data.data
+        : null;
+    return JSON.stringify(cleanJson(items || data, model), null, 2);
+  }
   const lines: string[] = [];
 
   if (title) {
@@ -206,9 +257,8 @@ export function format(
       lines.push(formatTable(items, MODEL_FIELDS[m as string]));
     }
   } else {
-    // Single Object
-    const m = model || data.model;
-    lines.push(formatObject(data, MODEL_FIELDS[m as string]));
+    // Single Object: use blacklist (no whitelist) to preserve detail
+    lines.push(formatObject(data));
   }
 
   return lines.join("\n").trim();

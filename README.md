@@ -2,10 +2,22 @@
 
 [![MCPAmpel](https://img.shields.io/endpoint?url=https://mcpampel.com/badge/getnao/nao-mcp-servers.json)](https://mcpampel.com/repo/getnao/nao-mcp-servers)
 
-***
+---
+
 A library of Model Context Protocol servers for various integrations.
 
+## Output format
+
+By default, both servers return **JSON** output. You can switch to **Markdown** output by adding the `--md` flag to the `args` array. Markdown uses tables and bullet points for a more readable format, while JSON is better suited for programmatic use.
+
+To enable Markdown output, add `"--md"` to the args:
+
+```json
+"args": ["-y", "@getnao/metabase-mcp-server@latest", "--md"]
+```
+
 ## metabase-mcp-server
+
 ```
 {
   "mcpServers": {
@@ -25,6 +37,7 @@ A library of Model Context Protocol servers for various integrations.
 ```
 
 ## fivetran-mcp-server
+
 ```
 {
   "mcpServers": {
