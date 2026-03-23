@@ -1,5 +1,7 @@
 # nao-mcp-servers
-***
+
+---
+
 A library of Model Context Protocol servers for various integrations.
 
 ## Output format
@@ -14,8 +16,7 @@ To enable Markdown output, add `"--md"` to the args:
 
 ## metabase-mcp-server
 
-**Default (JSON):**
-```json
+```
 {
   "mcpServers": {
     "metabase-nao": {
@@ -25,28 +26,8 @@ To enable Markdown output, add `"--md"` to the args:
         "@getnao/metabase-mcp-server@latest"
       ],
       "env": {
-        "METABASE_URL": "<YOUR_METABASE_URL>",
-        "METABASE_API_KEY": "<YOUR_METABASE_API_KEY>"
-      }
-    }
-  }
-}
-```
-
-**Markdown output:**
-```json
-{
-  "mcpServers": {
-    "metabase-nao": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@getnao/metabase-mcp-server@latest",
-        "--md"
-      ],
-      "env": {
-        "METABASE_URL": "<YOUR_METABASE_URL>",
-        "METABASE_API_KEY": "<YOUR_METABASE_API_KEY>"
+        "METABASE_URL": <YOUR_METABASE_URL>,
+        "METABASE_API_KEY": <YOUR_METABASE_API_KEY>
       }
     }
   }
@@ -55,8 +36,7 @@ To enable Markdown output, add `"--md"` to the args:
 
 ## fivetran-mcp-server
 
-**Default (JSON):**
-```json
+```
 {
   "mcpServers": {
     "fivetran-nao": {
@@ -66,26 +46,7 @@ To enable Markdown output, add `"--md"` to the args:
         "@getnao/fivetran-mcp-server@latest"
       ],
       "env": {
-        "FIVETRAN_BASE_64_API_KEY": "<YOUR_FIVETRAN_BASE_64_API_KEY>"
-      }
-    }
-  }
-}
-```
-
-**Markdown output:**
-```json
-{
-  "mcpServers": {
-    "fivetran-nao": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@getnao/fivetran-mcp-server@latest",
-        "--md"
-      ],
-      "env": {
-        "FIVETRAN_BASE_64_API_KEY": "<YOUR_FIVETRAN_BASE_64_API_KEY>"
+        "FIVETRAN_BASE_64_API_KEY": <YOUR_FIVETRAN_BASE_64_API_KEY>
       }
     }
   }
