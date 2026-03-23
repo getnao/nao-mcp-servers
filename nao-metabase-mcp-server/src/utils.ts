@@ -11,7 +11,7 @@ const METABASE_API_KEY = process.env.METABASE_API_KEY;
 
 if (!METABASE_URL || !METABASE_API_KEY) {
   throw new Error(
-    "METABASE_URL and METABASE_API_KEY must be set in environment variables."
+    "METABASE_URL and METABASE_API_KEY must be set in environment variables.",
   );
 }
 
@@ -24,7 +24,7 @@ export type ToolConfig = {
 
 export type ToolHandler = (
   args: any,
-  extra: RequestHandlerExtra<ServerRequest, ServerNotification>
+  extra: RequestHandlerExtra<ServerRequest, ServerNotification>,
 ) => CallToolResult | Promise<CallToolResult>;
 
 export type Tool = {
@@ -38,5 +38,7 @@ export const axiosInstance: AxiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+export const useMarkdown = process.argv.includes("--md");
 
 axiosInstance.defaults.headers.common["x-api-key"] = METABASE_API_KEY;

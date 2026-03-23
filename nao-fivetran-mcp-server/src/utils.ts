@@ -31,6 +31,8 @@ export type Tool = {
   handler: ToolHandler;
 };
 
+export const useMarkdown = process.argv.includes("--md");
+
 export const axiosInstance: AxiosInstance = axios.create({
   baseURL: "https://api.fivetran.com/v1",
   headers: {

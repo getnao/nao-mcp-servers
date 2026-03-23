@@ -2,8 +2,20 @@
 ***
 A library of Model Context Protocol servers for various integrations.
 
-## metabase-mcp-server
+## Output format
+
+By default, both servers return **JSON** output. You can switch to **Markdown** output by adding the `--md` flag to the `args` array. Markdown uses tables and bullet points for a more readable format, while JSON is better suited for programmatic use.
+
+To enable Markdown output, add `"--md"` to the args:
+
+```json
+"args": ["-y", "@getnao/metabase-mcp-server@latest", "--md"]
 ```
+
+## metabase-mcp-server
+
+**Default (JSON):**
+```json
 {
   "mcpServers": {
     "metabase-nao": {
@@ -13,8 +25,28 @@ A library of Model Context Protocol servers for various integrations.
         "@getnao/metabase-mcp-server@latest"
       ],
       "env": {
-        "METABASE_URL": <YOUR_METABASE_URL>,
-        "METABASE_API_KEY": <YOUR_METABASE_API_KEY>
+        "METABASE_URL": "<YOUR_METABASE_URL>",
+        "METABASE_API_KEY": "<YOUR_METABASE_API_KEY>"
+      }
+    }
+  }
+}
+```
+
+**Markdown output:**
+```json
+{
+  "mcpServers": {
+    "metabase-nao": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@getnao/metabase-mcp-server@latest",
+        "--md"
+      ],
+      "env": {
+        "METABASE_URL": "<YOUR_METABASE_URL>",
+        "METABASE_API_KEY": "<YOUR_METABASE_API_KEY>"
       }
     }
   }
@@ -22,7 +54,9 @@ A library of Model Context Protocol servers for various integrations.
 ```
 
 ## fivetran-mcp-server
-```
+
+**Default (JSON):**
+```json
 {
   "mcpServers": {
     "fivetran-nao": {
@@ -32,7 +66,26 @@ A library of Model Context Protocol servers for various integrations.
         "@getnao/fivetran-mcp-server@latest"
       ],
       "env": {
-        "FIVETRAN_BASE_64_API_KEY": <YOUR_FIVETRAN_BASE_64_API_KEY>
+        "FIVETRAN_BASE_64_API_KEY": "<YOUR_FIVETRAN_BASE_64_API_KEY>"
+      }
+    }
+  }
+}
+```
+
+**Markdown output:**
+```json
+{
+  "mcpServers": {
+    "fivetran-nao": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@getnao/fivetran-mcp-server@latest",
+        "--md"
+      ],
+      "env": {
+        "FIVETRAN_BASE_64_API_KEY": "<YOUR_FIVETRAN_BASE_64_API_KEY>"
       }
     }
   }
