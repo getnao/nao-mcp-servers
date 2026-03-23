@@ -1,5 +1,7 @@
 # nao-mcp-servers
 
+[![MCPAmpel](https://img.shields.io/endpoint?url=https://mcpampel.com/badge/getnao/nao-mcp-servers.json)](https://mcpampel.com/repo/getnao/nao-mcp-servers)
+
 ---
 
 A library of Model Context Protocol servers for various integrations.
