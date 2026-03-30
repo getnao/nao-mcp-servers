@@ -1,6 +1,6 @@
 # Metabase MCP Server
 
-A [Model Context Protocol](https://modelcontextprotocol.io) server designed by [Nao Labs](https://getnao.io) to interact with Metabase. It lets AI assistants query, create, and manage your Metabase instance — questions, dashboards, databases, collections, and more.
+A [Model Context Protocol](https://modelcontextprotocol.io) server designed by [nao](https://getnao.io) to interact with Metabase. It lets AI assistants query, create, and manage your Metabase instance — questions, dashboards, databases, collections, and more.
 
 ## Features
 
@@ -34,10 +34,10 @@ Add the server to your MCP client configuration:
 
 ## Configuration
 
-| Variable | Description |
-|---|---|
-| `METABASE_URL` | Base URL of your Metabase instance (e.g. `https://metabase.example.com`) |
-| `METABASE_API_KEY` | Your Metabase API key |
+| Variable           | Description                                                              |
+| ------------------ | ------------------------------------------------------------------------ |
+| `METABASE_URL`     | Base URL of your Metabase instance (e.g. `https://metabase.example.com`) |
+| `METABASE_API_KEY` | Your Metabase API key                                                    |
 
 ### Output format
 
@@ -51,69 +51,69 @@ By default the server returns **JSON** output. Add `--md` to args to switch to *
 
 ### Cards (Questions)
 
-| Tool | Description |
-|---|---|
-| `metabase-list-questions` | List all saved questions/cards |
-| `metabase-get-question` | Get details of a specific question by ID |
+| Tool                        | Description                                 |
+| --------------------------- | ------------------------------------------- |
+| `metabase-list-questions`   | List all saved questions/cards              |
+| `metabase-get-question`     | Get details of a specific question by ID    |
 | `metabase-execute-question` | Execute a saved question and return results |
-| `metabase-create-question` | Create a new question/card |
-| `metabase-update-question` | Update an existing question/card |
+| `metabase-create-question`  | Create a new question/card                  |
+| `metabase-update-question`  | Update an existing question/card            |
 
 ### Native Queries
 
-| Tool | Description |
-|---|---|
-| `metabase-execute-native-query` | Execute a native SQL or MBQL query |
+| Tool                            | Description                                          |
+| ------------------------------- | ---------------------------------------------------- |
+| `metabase-execute-native-query` | Execute a native SQL or MBQL query                   |
 | `metabase-export-query-results` | Execute a query and export results (csv, json, xlsx) |
 
 ### Dashboards
 
-| Tool | Description |
-|---|---|
-| `metabase-list-dashboards` | List all dashboards |
-| `metabase-get-dashboard` | Get a dashboard and its cards |
-| `metabase-create-dashboard` | Create a new dashboard |
+| Tool                        | Description                               |
+| --------------------------- | ----------------------------------------- |
+| `metabase-list-dashboards`  | List all dashboards                       |
+| `metabase-get-dashboard`    | Get a dashboard and its cards             |
+| `metabase-create-dashboard` | Create a new dashboard                    |
 | `metabase-update-dashboard` | Update a dashboard's details or dashcards |
 
 ### Databases
 
-| Tool | Description |
-|---|---|
-| `metabase-list-databases` | List all connected databases |
+| Tool                             | Description                          |
+| -------------------------------- | ------------------------------------ |
+| `metabase-list-databases`        | List all connected databases         |
 | `metabase-get-database-metadata` | Get tables and fields for a database |
-| `metabase-get-database-schemas` | Get available schemas for a database |
+| `metabase-get-database-schemas`  | Get available schemas for a database |
 
 ### Tables & Fields
 
-| Tool | Description |
-|---|---|
-| `metabase-get-table-metadata` | Get metadata for a specific table |
-| `metabase-update-table-metadata` | Update metadata for a specific table |
+| Tool                             | Description                                 |
+| -------------------------------- | ------------------------------------------- |
+| `metabase-get-table-metadata`    | Get metadata for a specific table           |
+| `metabase-update-table-metadata` | Update metadata for a specific table        |
 | `metabase-update-field-metadata` | Update metadata for a specific field/column |
 
 ### Collections
 
-| Tool | Description |
-|---|---|
-| `metabase-list-collections` | List all collections |
+| Tool                            | Description                   |
+| ------------------------------- | ----------------------------- |
+| `metabase-list-collections`     | List all collections          |
 | `metabase-get-collection-items` | Get all items in a collection |
 
 ### Search
 
-| Tool | Description |
-|---|---|
+| Tool                       | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
 | `metabase-search-metabase` | Search across questions, dashboards, collections, and tables |
 
 ### Activity
 
-| Tool | Description |
-|---|---|
-| `metabase-get-recent-activity` | Get the recent activity feed |
-| `metabase-get-recent-views` | Get recently viewed items for the current user |
+| Tool                           | Description                                    |
+| ------------------------------ | ---------------------------------------------- |
+| `metabase-get-recent-activity` | Get the recent activity feed                   |
+| `metabase-get-recent-views`    | Get recently viewed items for the current user |
 
 ### Users
 
-| Tool | Description |
-|---|---|
+| Tool                        | Description                           |
+| --------------------------- | ------------------------------------- |
 | `metabase-get-current-user` | Get info about the authenticated user |
-| `metabase-list-users` | List all users (requires admin) |
+| `metabase-list-users`       | List all users (requires admin)       |

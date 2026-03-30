@@ -1,6 +1,6 @@
 {
   "name": "@getnao/metabase-mcp-server",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A Model Context Protocol server, designed by Nao Labs to interact with Metabase.",
   "bin": {
     "metabase-mcp-server": "dist/index.js"
@@ -28,6 +28,21 @@
     "type": "git",
     "url": "git+https://github.com/getnao/nao-mcp-servers.git"
   },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "llm",
+    "ai-agent",
+    "metabase",
+    "analytics",
+    "data",
+    "bi",
+    "business-intelligence",
+    "sql",
+    "dashboard",
+    "data-visualization"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
