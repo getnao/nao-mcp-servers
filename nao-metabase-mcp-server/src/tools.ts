@@ -462,15 +462,6 @@ export const tools: Record<string, Tool> = {
         id: z.number().describe("Dashboard ID"),
         name: z.string().optional().describe("Dashboard name"),
         description: z.string().optional().describe("Dashboard description"),
-        tabs: z
-          .array(
-            z.object({
-              id: z.number().int().describe("Tab ID (use negative numbers for new tabs)"),
-              name: z.string().describe("Tab name"),
-            }),
-          )
-          .optional()
-          .describe("Dashboard tabs. Use negative IDs to create new tabs. Omit to leave tabs unchanged."),
         dashcards: z
           .array(
             z.object({
@@ -479,7 +470,7 @@ export const tools: Record<string, Tool> = {
                 .int()
                 .min(0)
                 .describe("Column position (must be >= 0)"),
-              id: z.number().int().describe("Dashcard ID (use negative numbers for new dashcards)"),
+              id: z.number().int().describe("Dashcard ID"),
               card_id: z.number().int().describe("Card ID"),
               row: z
                 .number()
@@ -488,22 +479,17 @@ export const tools: Record<string, Tool> = {
                 .describe("Row position (must be >= 0)"),
               size_x: z.number().int().min(1).describe("Width (must be >= 1)"),
               size_y: z.number().int().min(1).describe("Height (must be >= 1)"),
-              dashboard_tab_id: z
-                .number()
-                .int()
-                .nullable()
-                .optional()
-                .describe("Tab ID to assign this card to (required for dashboards with tabs)"),
             }),
           )
           .optional(),
       },
     },
-    handler: async ({ id, name, description, tabs, dashcards }: any) => {
-      const body: any = { name, description };
-      if (tabs !== undefined) body.tabs = tabs;
-      if (dashcards !== undefined) body.dashcards = dashcards;
-      const response = await axiosInstance.put(`/api/dashboard/${id}`, body);
+    handler: async ({ id, name, description, dashcards }: any) => {
+      const response = await axiosInstance.put(`/api/dashboard/${id}`, {
+        name,
+        description,
+        dashcards,
+      });
       return {
         content: [
           {
