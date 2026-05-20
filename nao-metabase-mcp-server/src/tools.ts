@@ -423,6 +423,47 @@ export const tools: Record<string, Tool> = {
     },
   },
 
+  "metabase-get-dashboard-tab": {
+    config: {
+      title: "Get Dashboard Tab",
+      description:
+        "Get cards for a specific tab of a dashboard. Use this instead of get-dashboard for large dashboards where the full payload is too big. Returns only the tabs list and dashcards belonging to the specified tab.",
+      inputSchema: {
+        dashboardId: z.number().describe("Dashboard ID"),
+        tabId: z.number().describe("Tab ID to filter dashcards by"),
+      },
+    },
+    handler: async ({ dashboardId, tabId }: any) => {
+      const response = await axiosInstance.get(`/api/dashboard/${dashboardId}`);
+      const data = response.data;
+
+      // Return only the tabs list and dashcards for the requested tab
+      const filtered = {
+        id: data.id,
+        name: data.name,
+        description: data.description,
+        collection_id: data.collection_id,
+        tabs: data.tabs ?? [],
+        // Only dashcards belonging to the requested tab
+        dashcards: (data.dashcards ?? []).filter(
+          (dc: any) => dc.dashboard_tab_id === tabId,
+        ),
+      };
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: format(filtered, {
+              model: "dashboard",
+              title: `Dashboard #${dashboardId} — Tab #${tabId}`,
+            }),
+          },
+        ],
+      };
+    },
+  },
+
   "metabase-create-dashboard": {
     config: {
       title: "Create Dashboard",
